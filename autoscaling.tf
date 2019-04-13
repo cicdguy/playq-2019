@@ -14,6 +14,11 @@ provider "aws" {
   region     = "${var.region}"
 }
 
+resource "aws_key_pair" "webserver-ssh-key" {
+  key_name   = "${var.ssh_key_pair_name}"
+  public_key = "${file(var.ssh_public_key_path)}"
+}
+
 # Use the default VPC
 data "aws_vpc" "default" {
   default = true
@@ -95,7 +100,7 @@ resource "aws_launch_configuration" "webserver-lc" {
   image_id        = "${data.aws_ami.latest_ami.id}"
   instance_type   = "${var.ec2_instance_type}"
   security_groups = ["${aws_security_group.webserver-sg.name}"]
-  key_name        = "${var.ssh_key_pair_name}"
+  key_name        = "${aws_key_pair.webserver-ssh-key.key_name}"
   user_data       = "${file(var.user_data_script)}"
 
   lifecycle {
@@ -112,7 +117,7 @@ resource "aws_launch_configuration" "webserver-lc" {
 
 ## Creating AutoScaling Group
 resource "aws_autoscaling_group" "webserver-asg" {
-  name                 = "${local.rc_name_prefix}-asg"
+  name_prefix          = "${local.rc_name_prefix}-"
   launch_configuration = "${aws_launch_configuration.webserver-lc.id}"
 
   # High availabilty for across all availability zones for the region
@@ -122,7 +127,8 @@ resource "aws_autoscaling_group" "webserver-asg" {
   desired_capacity   = "${var.asg_desired_instances}"
 
   load_balancers    = ["${aws_alb.webserver-alb.name}"]
-  health_check_type = "ELB"
+  health_check_type = "EC2"
+  force_delete      = true
 
   tags = [
     {

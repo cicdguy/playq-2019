@@ -59,13 +59,17 @@ The following are requirements for the deployment:
 
 ## Usage
 
-Assuming you have [`terraform`](https://www.terraform.io/) version *0.11.13* installed on your machine and it's in your `$PATH`:
+Assuming you have:
+    * [`terraform`](https://www.terraform.io/) version *0.11.13* installed on your machine 
+    * A 4096-bit RSA SSH keypair available at `/var/tmp/` with names `webserverkey[.pub]`
+    * and an AWS account with appropriate credentials
 
-* Source in your AWS credentials
-* Validate the terraform configs with `terraform validate`
-* Initialize terraform with `terraform init`
-* See what changes will take place with `terraform plan`
-* Execute the plan of action with `terraform apply`
+You'll need to:
+    * Source in your AWS credentials (and have them exported as the appropriate environment variables)
+    * Validate the terraform configs with `terraform validate`
+    * Initialize terraform with `terraform init`
+    * See what changes will take place with `terraform plan`
+    * Execute the plan of action with `terraform apply`
 
 ## Variables
 
@@ -80,12 +84,13 @@ Assuming you have [`terraform`](https://www.terraform.io/) version *0.11.13* ins
 | ec2\_instance\_type | EC2 Instance Type. More info: https://aws.amazon.com/ec2/instance-types/ | string | `"t2.micro"` | no |
 | ec2\_name\_tag | EC2 tag for the Name attribute | string | `"PlayQ-2019"` | no |
 | ec2\_type\_tag | EC2 tag for the Type attribute | string | `"webserver"` | no |
+| host\_header\_value | Where to redirect request based on host based routing | string | `"www.playqtest.com"` | no |
 | http\_port | HTTP Port | string | `"80"` | no |
 | region | AWS Region. More info: https://aws.amazon.com/about-aws/global-infrastructure/ | string | `"us-east-1"` | no |
 | secret\_access\_key | AWS Secret Access Key. You may set this as an env var called `TF_VAR_secret_access_key` | string | `""` | no |
 | ssh\_key\_pair\_name | SSH Key Pair Name | string | `"webservers"` | no |
-| ssh\_key\_pair\_path | Path on local machine to the SSH keys | string | `""` | no |
 | ssh\_port | SSH Port | string | `"22"` | no |
+| ssh\_public\_key\_path | Path to public SSH key on the machine | string | `"/var/tmp/webserverkey.pub"` | no |
 | use\_most\_recent\_ami | Use the most recent AMI for the filters corresponding to `ami_name_filter` and `ami_owner_account_id`? | string | `"true"` | no |
 | user\_data\_script | Location of the userdata script | string | `"./userdata.sh"` | no |
 | whitelisted\_ips | A list of whitelisted IPs for SSH access (besides your own) | list | `<list>` | no |

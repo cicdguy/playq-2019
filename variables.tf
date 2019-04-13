@@ -22,9 +22,9 @@ variable "ssh_key_pair_name" {
   type        = "string"
 }
 
-variable "ssh_key_pair_path" {
-  description = "Path on local machine to the SSH keys"
-  default     = ""
+variable "ssh_public_key_path" {
+  description = "Path to public SSH key on the machine"
+  default     = "/var/tmp/webserverkey.pub"
   type        = "string"
 }
 
@@ -98,4 +98,10 @@ variable "ami_owner_account_id" {
 variable "use_most_recent_ami" {
   description = "Use the most recent AMI for the filters corresponding to `ami_name_filter` and `ami_owner_account_id`?"
   default     = true
+}
+
+variable "host_header_value" {
+  description = "Where to redirect request based on host based routing"
+  default     = "www.playqtest.com"
+  type        = "string"
 }
