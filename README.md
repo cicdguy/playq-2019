@@ -97,6 +97,7 @@ You'll need to:
 
 ## Other information
 
+* Not tested with a real AWS account. Why? I ran out of credit/debit cards and email accounts to create a new free tier account :sob:. Only tested with `terraform validate` and `terraform plan`
 * Table of vars created with [`terraform-docs`](https://github.com/segmentio/terraform-docs)
 * Code formatting done with `terraform fmt`
 * Made with :heart: for the [PlayQ](https://www.playq.com/) Engineering Exercise
