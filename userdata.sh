@@ -23,7 +23,7 @@ then {
   # Install Apache
   apt-get install -y apache2
   # Start apache2
-  systemctl start apache2.service
+  service apache2 start
 }
 fi
 
